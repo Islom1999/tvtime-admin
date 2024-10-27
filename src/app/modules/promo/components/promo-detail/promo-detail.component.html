@@ -1,0 +1,67 @@
+<div class="content-container">
+    <nz-spin [nzSpinning]="loading">
+        <form nz-form [formGroup]="form" (submit)="submit()">
+            <h2 class="form-title">{{id ? "Promoni o'zgartirish" : "Promo qo'shish"}}</h2>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Promocode</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="Promocode" formControlName="code" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Chegirma (0-100%)</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="discount" formControlName="discount" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Soni (0-1000)</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="count" formControlName="count" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Admin</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select [nzMaxTagCount]="3" nzPlaceHolder="Admin" formControlName="admin_id">
+                        <nz-option *ngFor="let role of admin$ | async" [nzLabel]="role.name"
+                            [nzValue]="role.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Tarif</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select [nzMaxTagCount]="3" nzPlaceHolder="Tarif" formControlName="plan_id">
+                        <nz-option *ngFor="let role of plans$ | async" [nzLabel]="role.name"
+                            [nzValue]="role.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Status</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select [nzMaxTagCount]="3" nzPlaceHolder="Promo status" formControlName="is_active">
+                        <nz-option nzLabel="Active" [nzValue]="true"></nz-option>
+                        <nz-option nzLabel="NoActive" [nzValue]="false"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+
+            <nz-form-item>
+                <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                    <button nz-button nzType="primary" [disabled]="disableBtn">{{id ? "Update" : "Create"}}</button>
+                    <button nz-button>
+                        <a routerLink="/promo">Back</a>
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-spin>
+</div>

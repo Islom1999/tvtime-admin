@@ -1,0 +1,80 @@
+
+<h2>Foydalanuvchi ma'lumotlari</h2>
+<ng-container *ngIf="order?.user as user">
+    <nz-table [nzData]="[user]" [nzFrontPagination]="false" nz-responsive [nzShowPagination]="false">
+        <thead>
+            <tr>
+                <th>Ism familiya</th>
+                <th>Telefon</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Premium sanasi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ user?.name}}</td>
+                <td>{{ user?.phone ? user?.phone: '-----' }}</td>
+                <td>{{ user?.email ? user?.email : '-----' }}</td>
+                <td>{{ user?.is_block ? 'Bloklangan' : 'Avtice' }}</td>
+                <td>{{ user?.status_type }}</td>
+                <td>{{ user?.premium_end_date  ? (user?.premium_end_date | date) : '-----'}}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</ng-container>
+
+
+<h2>Tarif ma'lumotlari</h2>
+<ng-container *ngIf="order?.plan as plan">
+    <nz-table [nzData]="[plan]" [nzFrontPagination]="false" nz-responsive [nzShowPagination]="false">
+        <thead>
+            <tr>
+                <th>Nomi</th>
+                <th>Narxi</th>
+                <th>Muddati</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ plan?.name }}</td>
+                <td>{{ plan?.price }}</td>
+                <td>{{ plan?.premium_date ? (plan?.premium_date + '-kun') : '-----' }}</td>
+                <td>{{ plan?.is_active ? 'Active' : 'Bloklangan' }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</ng-container>
+
+
+<h2>To'lov ma'lumotlari</h2>
+<ng-container *ngIf="order?.transactions as transactions">
+    <nz-table [nzData]="[transactions || []]" [nzFrontPagination]="false" nz-responsive [nzShowPagination]="false">
+        <thead>
+            <tr>
+                <th>To'lov kodi</th>
+                <th>Turi</th>
+                <th>Narxi</th>
+                <th>Status</th>
+                <th>To'langan sana</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of (order?.transactions || []); index as i">
+                <td>{{ data.trans_id }}</td>
+                <td>
+                    <nz-tag [nzColor]="'#87d068'">{{ data.provider.toLocaleUpperCase() }}</nz-tag>
+                </td>
+                <td>{{ data.amount / 100 }}</td>
+                <td>
+                    <nz-tag [nzColor]="data.status == 'PAID' ? '#87d068': '#f50'">{{ data.status }}</nz-tag>
+                </td>
+                <td>{{ data.perform_time ? (data.perform_time | date) : '-----' }}</td>
+            </tr>
+        </tbody>
+    </nz-table>
+</ng-container>
+
+

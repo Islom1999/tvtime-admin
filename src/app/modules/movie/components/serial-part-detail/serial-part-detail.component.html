@@ -1,0 +1,30 @@
+<div class="content-container">
+    <nz-spin [nzSpinning]="loading">
+        <form nz-form [formGroup]="form" (submit)="submit()">
+            <h2 class="form-title">{{id ? "part o'zgartirish" : "part qo'shish"}}</h2>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Name</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="Name" formControlName="name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Video</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="video_id">
+                        <nz-option *ngIf="movie?.video_file"  [nzLabel]="movie.video_file?.file_name + ' - ' + movie.video_file?.format + ' - ' + (movie.video_file?.created_at | date: 'dd.MM.yyyy')" [nzValue]="movie.video_file?.id"></nz-option>
+                        <nz-option *ngFor="let item of video$ | async" [nzLabel]="item.file_name + ' - ' + item.format + ' - ' + (item.created_at | date: 'dd.MM.yyyy')" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                    <button nz-button nzType="primary" [disabled]="disableBtn">{{id ? "Update" : "Create"}}</button>
+                    <button type="button" nz-button (click)="close()">Back</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-spin>
+</div>

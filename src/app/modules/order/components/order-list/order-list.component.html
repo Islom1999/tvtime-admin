@@ -1,0 +1,126 @@
+<div class="table-top">
+    <div class="left">
+        <h2>Buyutrmalar ro'yhati</h2>
+    </div>
+    <div class="right">
+        <nz-range-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+    </div>
+</div>
+
+<ng-container>
+    <nz-table [nzScroll]="{x: 'auto'}" nz-responsive #basicTable [nzData]="(orders$ | async) ?? []"
+        [nzLoading]="(orders$ | async) ? false : true">
+        <thead>
+            <tr>
+                <th nzWidth="50px">No</th>
+                <th nzCustomFilter nzWidth="250px">
+                    TID
+                    <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menu">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <th nzWidth="120px">
+                    User
+                    <nz-filter-trigger [(nzVisible)]="visibleUser" [nzActive]="searchValueUser.length > 0"
+                        [nzDropdownMenu]="menuUser">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <th nzWidth="120px">
+                    Usul
+                    <nz-filter-trigger [(nzVisible)]="visibleType" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menuType">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <th nzWidth="150px">
+                    To'langan sana
+                </th>
+                <th nzWidth="120px">Narxi</th>
+                <!-- <th>Chegirma</th> -->
+                <th nzWidth="120px">Tarif</th>
+                
+                <th nzWidth="120px">Boshqaruv</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data; index as i">
+                <td>{{ i+1 }}</td>
+                <td>{{ data.tid }}</td>
+                <td>{{ data?.user?.name }}</td>
+                <td>
+                    <ng-container *ngIf="data.transactions[0] as tr">
+                        <nz-tag [nzColor]="'#87d068'">{{ tr.provider.toLocaleUpperCase() }}</nz-tag>
+                    </ng-container>
+                </td>
+                <td>
+                    <ng-container *ngIf="data.transactions[0] as tr">
+                        {{tr.created_at | date : 'dd.MM.YYYY'}}
+                    </ng-container>
+                </td>
+                <td>{{ data.price }}</td>
+                <!-- <td>{{ data.discount }}</td> -->
+                <td>{{ data?.plan?.name }}</td>
+                <td>
+                    <nz-button-group>
+                        <!-- <button nzType="default" nz-button nzSize="large" nz-popconfirm
+                            nzPopconfirmTitle="Ushbu m'alumotni o'chirmoqchimisiz?" nzPopconfirmPlacement="topRight"
+                            nz-button (nzOnConfirm)="delete(data.id)">
+                            <span nz-icon nzType="delete" nzTheme="outline" style="color: red;"></span>
+                        </button>   
+                        <a [routerLink]="['update', data.id]" nzType="default" nz-button nzSize="large">
+                            <span nz-icon nzType="edit" nzTheme="outline" style="color: blue;"></span>
+                        </a> -->
+
+                        <button nzType="default" nz-button nzSize="large" (click)="open(data.id!)">
+                            <span nz-icon nzType="folder-open" nzTheme="outline" style="color: blue;"></span>
+                        </button>
+                    </nz-button-group>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</ng-container>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+            <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #menuType="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <nz-form-item>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzPlaceHolder="Please select" [(ngModel)]="searchValueType">
+                        <nz-option *ngFor="let item of paymentType" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <button nz-button nzSize="small" nzType="primary" (click)="searchType()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="resetType()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #menuUser="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValueUser" />
+            <button nz-button nzSize="small" nzType="primary" (click)="searchUser()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="resetUser()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>

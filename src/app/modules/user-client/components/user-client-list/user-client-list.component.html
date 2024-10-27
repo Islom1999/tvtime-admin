@@ -1,0 +1,135 @@
+<div class="table-top">
+    <div class="left">
+        <h2>Foydalanuvchilar ro'yhati</h2>
+    </div>
+    <div class="right">
+        <nz-range-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+    </div>
+</div>
+
+<ng-container>
+    <nz-table [nzScroll]="{x: 'auto'}" nz-responsive #basicTable [nzData]="(users$ | async) ?? []"
+        [nzLoading]="(users$ | async) ? false : true">
+        <thead>
+            <tr>
+                <th nzWidth="50px">No</th>
+                <th nzCustomFilter>
+                    Nomi
+                    <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menu">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <th>
+                    Email
+
+                    <nz-filter-trigger [(nzVisible)]="visibleEmail" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menuEmail">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <th>
+                    Phone
+
+                    <nz-filter-trigger [(nzVisible)]="visiblePhone" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menuPhone">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <!-- <th>
+                    Status
+                </th> -->
+                <th>
+                    Type
+                    <nz-filter-trigger [(nzVisible)]="visibleType" [nzActive]="searchValue.length > 0"
+                        [nzDropdownMenu]="menuType">
+                        <button nz-button nzSize="large">
+                            <span nz-icon nzType="search" style="color: blue;"></span>
+                        </button>
+                    </nz-filter-trigger>
+                </th>
+                <th>Premium date</th>
+                <th>Boshqaruv</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of basicTable.data; index as i">
+                <td>{{ i+1 }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.email ? data.email : '-----' }}</td>
+                <td>{{ data.phone ? data.phone : '-----' }}</td>
+                <!-- <td>{{ data.is_block ? 'Bloklangan' : 'Avtice' }}</td> -->
+                <td>{{ data.status_type }}</td>
+                <td>{{ data.premium_end_date ? (data.premium_end_date | date) : '-----' }}</td>
+                <td>
+                    <nz-button-group>
+                        <!-- <button nzType="default" nz-button nzSize="large" nz-popconfirm
+                            nzPopconfirmTitle="Ushbu m'alumotni o'chirmoqchimisiz?" nzPopconfirmPlacement="topRight"
+                            nz-button (nzOnConfirm)="delete(data.id)">
+                            <span nz-icon nzType="delete" nzTheme="outline" style="color: red;"></span>
+                        </button>
+                        <a [routerLink]="['update', data.id]" nzType="default" nz-button nzSize="large">
+                            <span nz-icon nzType="edit" nzTheme="outline" style="color: blue;"></span>
+                        </a> -->
+
+                        <button nzType="default" nz-button nzSize="large" (click)="open(data.id!)">
+                            <span nz-icon nzType="folder-open" nzTheme="outline" style="color: blue;"></span>
+                        </button>
+                    </nz-button-group>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</ng-container>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+            <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #menuEmail="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValueEmail" />
+            <button nz-button nzSize="small" nzType="primary" (click)="searchEmail()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="resetEmail()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #menuPhone="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValuePhone" />
+            <button nz-button nzSize="small" nzType="primary" (click)="searchPhone()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="resetPhone()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #menuType="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <nz-form-item>
+                <nz-form-control [nzSpan]="24" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzPlaceHolder="Please select" [(ngModel)]="searchValueType">
+                        <nz-option *ngFor="let item of statusType" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <button nz-button nzSize="small" nzType="primary" (click)="searchType()" class="search-button">Search</button>
+            <button nz-button nzSize="small" (click)="resetType()">Reset</button>
+        </div>
+    </div>
+</nz-dropdown-menu>

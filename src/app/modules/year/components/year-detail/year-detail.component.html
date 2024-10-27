@@ -1,0 +1,22 @@
+<div class="content-container">
+    <nz-spin [nzSpinning]="loading">
+        <form nz-form [formGroup]="form" (submit)="submit()">
+            <h2 class="form-title">{{id ? "yearni o'zgartirish" : "year qo'shish"}}</h2>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Yil</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="Yil" formControlName="year" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                    <button nz-button nzType="primary" [disabled]="disableBtn">{{id ? "Update" : "Create"}}</button>
+                    <button nz-button>
+                        <a routerLink="/year">Back</a>
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-spin>
+</div>

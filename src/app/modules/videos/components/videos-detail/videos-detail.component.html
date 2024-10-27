@@ -1,0 +1,37 @@
+<div>
+    <h2>Video Yuklash</h2>
+    <nz-upload 
+        [nzBeforeUpload]="beforeUpload" 
+        [nzShowUploadList]="false" 
+        nzType="drag" 
+        [nzDisabled]="uploading || processing" 
+        [nzMultiple]="false"
+    >
+        <ng-container *ngIf="!uploading && !processing">
+            <p class="ant-upload-drag-icon">
+                <span nz-icon nzType="inbox"></span>
+            </p>
+            <p class="ant-upload-text">Videoni shu yerga yuklang</p>
+            <p class="ant-upload-hint">
+                Video hajmi 2GB dan ko'p bolmasligi va mp4 formatda yuklanishi kerak 
+            </p>
+        </ng-container>
+
+        <ng-container *ngIf="uploading">
+            <nz-progress nzType="circle" *ngIf="uploading" [nzPercent]="uploadProgress"></nz-progress>
+            <nz-spin nzSimple [nzSize]="'large'"></nz-spin>
+            <h2>Sizning videongiz yuklanyapti</h2>
+        </ng-container>
+
+        <ng-container *ngIf="processing">
+            <nz-progress nzType="circle" *ngIf="processing" [nzPercent]="processingProgress"></nz-progress>
+            <h2>Yana ozgina kuting deyali tugadi</h2>
+        </ng-container>
+    </nz-upload>
+
+    <div class="container">
+        <button (click)="back()" nzType="default" nz-button nzSize="large" nzType="default" [disabled]="uploading || processing" >
+            Ortga
+        </button>
+    </div>
+</div>

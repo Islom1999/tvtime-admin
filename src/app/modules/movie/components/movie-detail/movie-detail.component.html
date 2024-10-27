@@ -1,0 +1,226 @@
+
+<h2>{{movie_type != movie_type_serial ? "Movie" : "Serial"}}ni {{id ? "o'zgartirish" : "yaratish"}}</h2>
+
+<h2>Images</h2>
+<div class="image-container">
+    <div class="clearfix">
+        <nz-upload
+          [nzAction]="uploadURL"
+          nzListType="picture-card"
+          [(nzFileList)]="fileListImages"
+          [nzShowButton]="fileListImages.length < 3"
+          [nzPreview]="handlePreview"
+          [nzRemove]="removeImage"
+          [nzCustomRequest]="customUpload"
+          nzName="image"
+        >
+          <div>
+            <span nz-icon nzType="plus"></span>
+            <div style="margin-top: 8px">Upload</div>
+          </div>
+        </nz-upload>
+        <nz-modal
+          [nzVisible]="previewVisible"
+          [nzContent]="modalContent"
+          [nzFooter]="null"
+          (nzOnCancel)="previewVisible = false"
+        >
+          <ng-template #modalContent>
+            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+      </div>
+</div>
+
+<h2>Frame Images</h2>
+<div class="image-container">
+    <div class="clearfix">
+        <nz-upload
+          [nzAction]="uploadURL"
+          nzListType="picture-card"
+          [(nzFileList)]="fileListImagesFrame"
+          [nzShowButton]="fileListImagesFrame.length < 10"
+          [nzPreview]="handlePreviewFrame"
+          [nzRemove]="removeImageFrame"
+          [nzCustomRequest]="customUploadFrame"
+          nzName="frame_image"
+        >
+          <div >
+            <span nz-icon nzType="plus"></span>
+            <div style="margin-top: 8px">Upload</div>
+          </div>
+        </nz-upload>
+        <nz-modal
+          [nzVisible]="previewVisibleFrame"
+          [nzContent]="modalContentFrame"
+          [nzFooter]="null"
+          (nzOnCancel)="previewVisibleFrame = false"
+        >
+          <ng-template #modalContentFrame>
+            <img [src]="previewImageFrame" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+      </div>
+</div>
+
+<div class="content-container">
+    <nz-spin [nzSpinning]="loading">
+        <form nz-form [formGroup]="form" (submit)="submit()">
+            <h2 class="form-title">{{id ? "movieni o'zgartirish" : "movie qo'shish"}}</h2>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Name</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="Name" formControlName="name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- <nz-form-item *ngIf="this.movie_type != movie_type_serial">
+                <nz-form-label [nzSpan]="7" nzRequired>Video</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <textarea nz-input placeholder="Video" formControlName="video"></textarea>
+                </nz-form-control>
+            </nz-form-item> -->
+
+            <!-- <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Treyler</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <textarea nz-input placeholder="Treyler" formControlName="treyler"></textarea>
+                </nz-form-control>
+            </nz-form-item> -->
+
+            <!-- <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>quality</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzPlaceHolder="Please select" formControlName="quality">
+                        <nz-option *ngFor="let item of  quality" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item> -->
+
+            <nz-form-item *ngIf="this.movie_type != movie_type_serial">
+                <nz-form-label [nzSpan]="7" nzRequired>Video</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="video_id">
+                        <nz-option *ngIf="movie?.video_file"  [nzLabel]="movie.video_file?.file_name + ' - ' + movie.video_file?.format + ' - ' + (movie.video_file?.created_at | date: 'dd.MM.yyyy')" [nzValue]="movie.video_file?.id"></nz-option>
+                        <nz-option *ngFor="let item of video$ | async" [nzLabel]="item.file_name + ' - ' + item.format + ' - ' + (item.created_at | date: 'dd.MM.yyyy')" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>status_type</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="status_type">
+                        <nz-option *ngFor="let item of  status_type" [nzLabel]="item" [nzValue]="item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>country</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="country_id">
+                        <nz-option *ngFor="let item of  country$ | async" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>year</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="year_id">
+                        <nz-option *ngFor="let item of  year$ | async" [nzLabel]="item.year" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Sounder</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your permision!">
+                    <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" nzMode="multiple"
+                        nzPlaceHolder="Please select" [(ngModel)]="listOfSelectedSounder" formControlName="sounderId">
+                        <nz-option *ngFor="let item of sounder$ | async" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                    <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more
+                        selected</ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Category</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your permision!">
+                    <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" nzMode="multiple"
+                        nzPlaceHolder="Please select" [(ngModel)]="listOfSelectedCategory" formControlName="categoryId">
+                        <nz-option *ngFor="let item of category$ | async" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                    <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more
+                        selected</ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>MovieGenre</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your permision!">
+                    <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" nzMode="multiple"
+                        nzPlaceHolder="Please select" [(ngModel)]="listOfSelectedMovieGenre" formControlName="movieGenreId">
+                        <nz-option *ngFor="let item of movie_genre$ | async" [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+                    </nz-select>
+                    <ng-template #tagPlaceHolder let-selectedList>and {{ selectedList.length }} more
+                        selected</ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>is_slider</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select nzPlaceHolder="Please select" formControlName="is_slider">
+                        <nz-option nzLabel="sliderga qo'shilsin" [nzValue]="true"></nz-option>
+                        <nz-option nzLabel="sliderga qo'shilmasin" [nzValue]="false"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>language</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="language" formControlName="language" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>min_age</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="min_age" formControlName="min_age" />
+                </nz-form-control>
+            </nz-form-item>
+
+            
+
+            <nz-form-item *ngIf="this.movie_type != movie_type_serial">
+                <nz-form-label [nzSpan]="7" nzRequired>duration</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="duration" formControlName="duration" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Tarifi</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <div class="content" role="main">
+                        <ckeditor class="ckeditor" [editor]="Editor" formControlName="descr">
+                        </ckeditor>
+                    </div>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                    <button nz-button nzType="primary" [disabled]="disableBtn">{{id ? "Update" : "Create"}}</button>
+                    <button nz-button>
+                        <a routerLink="/movie">Back</a>
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-spin>
+</div>

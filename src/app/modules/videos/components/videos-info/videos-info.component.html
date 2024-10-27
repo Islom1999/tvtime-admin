@@ -1,0 +1,35 @@
+<div class="popup">
+    <div>
+      <video
+        controls
+        #videoPlayer
+        *ngIf="video$ | async as vid"
+        (timeupdate)="onTimeUpdate($event)"
+      >
+        <source
+          [src]="baseUrl + '/video-stream/watch/' + vid.file_name + '?resolution=' + selectedFormat + '&start=' + startTime"
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+
+      <h2>Video nomi: {{videoData.file_name}}</h2>
+      <h3>Formatlar {{videoData.format | json}}</h3>
+      <h3>Yuklangan sana: {{videoData.created_at| date: 'dd.MM.yyyy'}}</h3>
+
+      <a [routerLink]="['/video']" nzType="default" nz-button nzSize="large" nzType="default" >
+        Videolar
+    </a>
+      <a [routerLink]="['/movie']" nzType="default" nz-button nzSize="large" nzType="default" >
+        Kinolar
+    </a>
+    </div>
+    <div>
+      <label for="formatSelect">Select Format:</label>
+      <select id="formatSelect" (change)="onFormatChange($event)">
+        <option [value]="0" selected>{{"default" }}</option>
+        <option *ngFor="let format of (video$ | async)?.format" [value]="format">{{ format }}p</option>
+      </select>
+    </div>
+  </div>
+  

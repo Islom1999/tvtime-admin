@@ -1,0 +1,47 @@
+<div class="content-container">
+    <nz-spin [nzSpinning]="loading">
+        <form nz-form [formGroup]="form" (submit)="submit()">
+            <h2 class="form-title">{{id ? "Planni o'zgartirish" : "Plan qo'shish"}}</h2>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Name</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="Name" formControlName="name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Premium date</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="Premium date" formControlName="premium_date" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Premium price</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input type="number" nz-input placeholder="Premium price" formControlName="price" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>Status</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
+                    <nz-select [nzMaxTagCount]="3" nzPlaceHolder="Plan status" formControlName="is_active">
+                        <nz-option nzLabel="Active" [nzValue]="true"></nz-option>
+                        <nz-option nzLabel="NoActive" [nzValue]="false"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+
+            <nz-form-item>
+                <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                    <button nz-button nzType="primary" [disabled]="disableBtn">{{id ? "Update" : "Create"}}</button>
+                    <button nz-button>
+                        <a routerLink="/plan">Back</a>
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-spin>
+</div>
