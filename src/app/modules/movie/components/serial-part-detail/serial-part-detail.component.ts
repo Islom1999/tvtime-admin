@@ -41,7 +41,7 @@ export class SerialPartDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      video_id: new FormControl('', [Validators.required]),
+      video: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
     });
     if (this.id) {

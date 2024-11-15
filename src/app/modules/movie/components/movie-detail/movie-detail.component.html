@@ -74,30 +74,14 @@
                 </nz-form-control>
             </nz-form-item>
 
+            <nz-form-item  *ngIf="this.movie_type != movie_type_serial">
+                <nz-form-label [nzSpan]="7" nzRequired>video</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="video" formControlName="video" />
+                </nz-form-control>
+            </nz-form-item>
+            
             <!-- <nz-form-item *ngIf="this.movie_type != movie_type_serial">
-                <nz-form-label [nzSpan]="7" nzRequired>Video</nz-form-label>
-                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
-                    <textarea nz-input placeholder="Video" formControlName="video"></textarea>
-                </nz-form-control>
-            </nz-form-item> -->
-
-            <!-- <nz-form-item>
-                <nz-form-label [nzSpan]="7" nzRequired>Treyler</nz-form-label>
-                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
-                    <textarea nz-input placeholder="Treyler" formControlName="treyler"></textarea>
-                </nz-form-control>
-            </nz-form-item> -->
-
-            <!-- <nz-form-item>
-                <nz-form-label [nzSpan]="7" nzRequired>quality</nz-form-label>
-                <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
-                    <nz-select nzPlaceHolder="Please select" formControlName="quality">
-                        <nz-option *ngFor="let item of  quality" [nzLabel]="item" [nzValue]="item"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item> -->
-
-            <nz-form-item *ngIf="this.movie_type != movie_type_serial">
                 <nz-form-label [nzSpan]="7" nzRequired>Video</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
                     <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="video_id">
@@ -105,7 +89,7 @@
                         <nz-option *ngFor="let item of video$ | async" [nzLabel]="item.file_name + ' - ' + item.format + ' - ' + (item.created_at | date: 'dd.MM.yyyy')" [nzValue]="item.id"></nz-option>
                     </nz-select>
                 </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
 
             <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>status_type</nz-form-label>
@@ -135,7 +119,7 @@
             </nz-form-item>
 
             <nz-form-item>
-                <nz-form-label [nzSpan]="7" nzRequired>Sounder</nz-form-label>
+                <nz-form-label [nzSpan]="7">Sounder</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your permision!">
                     <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" nzMode="multiple"
                         nzPlaceHolder="Please select" [(ngModel)]="listOfSelectedSounder" formControlName="sounderId">
@@ -180,28 +164,28 @@
                 </nz-form-control>
             </nz-form-item>
 
-            <nz-form-item>
+            <!-- <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>language</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
                     <input nz-input placeholder="language" formControlName="language" />
                 </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
 
-            <nz-form-item>
+            <!-- <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>min_age</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
                     <input type="number" nz-input placeholder="min_age" formControlName="min_age" />
                 </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
 
             
 
-            <nz-form-item *ngIf="this.movie_type != movie_type_serial">
+            <!-- <nz-form-item *ngIf="this.movie_type != movie_type_serial">
                 <nz-form-label [nzSpan]="7" nzRequired>duration</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
                     <input type="number" nz-input placeholder="duration" formControlName="duration" />
                 </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
 
             <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>Tarifi</nz-form-label>

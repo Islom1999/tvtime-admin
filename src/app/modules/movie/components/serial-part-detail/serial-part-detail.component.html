@@ -10,6 +10,13 @@
             </nz-form-item>
 
             <nz-form-item>
+                <nz-form-label [nzSpan]="7" nzRequired>video</nz-form-label>
+                <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." nzErrorTip="Please input">
+                    <input nz-input placeholder="video" formControlName="video" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- <nz-form-item>
                 <nz-form-label [nzSpan]="7" nzRequired>Video</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input">
                     <nz-select nzShowSearch nzPlaceHolder="Please select" formControlName="video_id">
@@ -17,7 +24,7 @@
                         <nz-option *ngFor="let item of video$ | async" [nzLabel]="item.file_name + ' - ' + item.format + ' - ' + (item.created_at | date: 'dd.MM.yyyy')" [nzValue]="item.id"></nz-option>
                     </nz-select>
                 </nz-form-control>
-            </nz-form-item>
+            </nz-form-item> -->
 
             <nz-form-item>
                 <nz-form-control [nzOffset]="7" [nzSpan]="12">

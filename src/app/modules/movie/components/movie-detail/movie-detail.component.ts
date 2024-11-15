@@ -244,27 +244,27 @@ export class MovieDetailComponent {
     }
 
     this.form = new FormGroup({
-      // video: new FormControl('', [(this.movie_type != MovieType.serial) ? Validators.required : Validators.minLength(0)]),
+      video: new FormControl('', [(this.movie_type != MovieType.serial) ? Validators.required : Validators.minLength(0)]),
       
 
       // treyler: new FormControl('', [Validators.required]),
       name: new FormControl('', [Validators.required]),
       descr: new FormControl('', [Validators.required]),
       // quality: new FormControl(Quality.hd_720, [Validators.required]),
-      min_age: new FormControl(18, [Validators.required, Validators.min(0), Validators.max(100)]),
-      language: new FormControl("O'zbek", [Validators.required]),
+      // min_age: new FormControl(18, [Validators.required, Validators.min(0), Validators.max(100)]),
+      // language: new FormControl("O'zbek", [Validators.required]),
       status_type: new FormControl(StatusType.free, [Validators.required]),
       is_slider: new FormControl(false, [Validators.required]),
 
       country_id: new FormControl('', [Validators.required]),
       year_id: new FormControl('', [Validators.required]),
       
-      sounderId: new FormControl('', [Validators.required]),
+      // sounderId: new FormControl('', [Validators.required]),
       categoryId: new FormControl('', [Validators.required]),
       movieGenreId: new FormControl('', [Validators.required]),
 
-      video_id: new FormControl('', [Validators.required]),
-      duration: new FormControl(0, [Validators.required, Validators.min(0)])
+      // video_id: new FormControl('', [Validators.required]),
+      // duration: new FormControl(0, [Validators.required, Validators.min(0)])
     });
     
     if (this.movie_type == MovieType.serial) {
