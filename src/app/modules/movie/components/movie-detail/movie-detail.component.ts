@@ -203,41 +203,47 @@ export class MovieDetailComponent {
     this.movie_type = this.route.snapshot.data['type'];
     
     if (this.id) {
-      this._modelSrv.getByIdMovie(this.id).subscribe((movie) => {
-        this.movie = movie
-        this.form.patchValue({
-          ...movie, 
-          categoryId: movie?.category?.map(item => item.id),
-          sounderId: movie?.sounder?.map(item => item.id),
-          movieGenreId: movie?.movie_genre?.map(item => item.id),
+      try {
+        this._modelSrv.getByIdMovie(this.id).subscribe((movie) => {
+          this.movie = movie
+          this.form.patchValue({
+            ...movie, 
+            categoryId: movie?.category?.map(item => item.id),
+            sounderId: movie?.sounder?.map(item => item.id),
+            movieGenreId: movie?.movie_genre?.map(item => item.id),
+          });
+          this.fileListImages = movie.images.map((item, index) => {
+            return {
+              uid: `-${index+1}`,
+              name: item,
+              status: 'done',
+              url: `${environment.apiUrl}/image/${item}`,
+              response: {
+                filename: item,
+                url: `${environment.apiUrl}/image/${item}`,
+              }
+            }
+          })
+          this.fileListImagesFrame = movie.frame_images.map((item, index) => {
+            return {
+              uid: `-${index+1}`,
+              name: item,
+              status: 'done',
+              url: `${environment.apiUrl}/image/${item}`,
+              response: {
+                filename: item,
+                url: `${environment.apiUrl}/image/${item}`,
+              }
+            }
+          })
+          this.disableBtn = false;
+          this.loading = false;
         });
-        this.fileListImages = movie.images.map((item, index) => {
-          return {
-            uid: `-${index+1}`,
-            name: item,
-            status: 'done',
-            url: `${environment.apiUrl}/image/${item}`,
-            response: {
-              filename: item,
-              url: `${environment.apiUrl}/image/${item}`,
-            }
-          }
-        })
-        this.fileListImagesFrame = movie.frame_images.map((item, index) => {
-          return {
-            uid: `-${index+1}`,
-            name: item,
-            status: 'done',
-            url: `${environment.apiUrl}/image/${item}`,
-            response: {
-              filename: item,
-              url: `${environment.apiUrl}/image/${item}`,
-            }
-          }
-        })
+      } catch (error) {
+        console.log('error', error);
         this.disableBtn = false;
         this.loading = false;
-      });
+      }
     } else {
       this.loading = false;
       this.disableBtn = false;
@@ -259,7 +265,7 @@ export class MovieDetailComponent {
       country_id: new FormControl('', [Validators.required]),
       year_id: new FormControl('', [Validators.required]),
       
-      // sounderId: new FormControl('', [Validators.required]),
+      sounderId: new FormControl('', [Validators.required]),
       categoryId: new FormControl('', [Validators.required]),
       movieGenreId: new FormControl('', [Validators.required]),
 

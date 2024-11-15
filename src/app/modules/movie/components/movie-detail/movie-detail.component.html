@@ -119,7 +119,7 @@
             </nz-form-item>
 
             <nz-form-item>
-                <nz-form-label [nzSpan]="7">Sounder</nz-form-label>
+                <nz-form-label [nzSpan]="7" nzRequired>Sounder</nz-form-label>
                 <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your permision!">
                     <nz-select [nzMaxTagCount]="3" [nzMaxTagPlaceholder]="tagPlaceHolder" nzMode="multiple"
                         nzPlaceHolder="Please select" [(ngModel)]="listOfSelectedSounder" formControlName="sounderId">
